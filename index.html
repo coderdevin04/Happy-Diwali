@@ -261,7 +261,7 @@
         </div>
     </div>
     <script>
-        
+       
         function generateSparkles() {
             const sparkleContainer = document.querySelector('.sparkle-container');
             for (let i = 0; i < 50; i++) {
@@ -429,10 +429,16 @@
             generateSparkles();
         });
         window.addEventListener('load', () => {
-    const audio = document.getElementById('backgroundSong');
-    audio.volume = 0.3;
-    audio.play().catch(e => console.log('Song play failed:', e));
-});
+            const audio = document.getElementById('backgroundSong');
+            audio.volume = 0.3;
+            audio.muted = true; // Mute for autoplay
+            audio.play().catch(e => console.log('Song play failed:', e));
+            // Unmute on first user interaction
+            document.addEventListener('click', function unmuteOnce() {
+                audio.muted = false;
+                document.removeEventListener('click', unmuteOnce);
+            }, { once: true });
+        });
     </script>
 </body>
 </html>
