@@ -1,1 +1,438 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Diwali</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Noto+Serif+Devanagari:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #ffd700;
+            --muted: #e0e0e0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #00001a;
+            margin: 0;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+        }
+        .hidden {
+            display: none !important;
+        }
+        #diyaLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #2c0b1e, #4b1c35);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            flex-direction: column;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+        .diya-row {
+            display: flex;
+            gap: 30px;
+            z-index: 2;
+        }
+        .diya-emoji {
+            font-size: 60px;
+            opacity: 0.3;
+            transition: opacity 0.5s;
+        }
+        .diya-emoji.lit {
+            opacity: 1;
+            text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00;
+            animation: flicker 1.5s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00; }
+            100% { text-shadow: 0 0 30px #ffd700, 0 0 50px #ff8c00; }
+        }
+        .rangoli-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.imgur.com/rangoli-pattern.jpg') center/contain no-repeat;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        #typewriterScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #2c0b1e, #4b1c35);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .typewriter-text {
+            font-family: 'Dancing Script', cursive;
+            color: var(--gold);
+            font-size: 3.5em;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid var(--gold);
+        }
+        .hindi-text {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 3em;
+            color: var(--gold);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            display: none;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid var(--gold);
+        }
+        .sparkle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .sparkle {
+            position: absolute;
+            background-color: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle-anim 3s infinite;
+        }
+        @keyframes sparkle-anim {
+            0% { transform: scale(0); opacity: 0; }
+            20% { opacity: 1; transform: scale(1); }
+            80% { opacity: 0; transform: scale(0.5); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        .wish-card {
+            background: linear-gradient(145deg, #1c0a0a, #4a2a0a);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            max-width: 550px;
+            position: relative;
+            z-index: 1;
+            border: 2px solid var(--gold);
+            opacity: 0;
+            animation: fadeInScale 1s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation-delay: 7.5s;
+            margin: 20px;
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        h1.greeting {
+            font-family: 'Dancing Script', cursive;
+            color: var(--gold);
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+        }
+        p.wish-text {
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: var(--muted);
+            opacity: 0;
+            animation: revealText 1.5s forwards;
+            animation-delay: 8s;
+        }
+        @keyframes revealText {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .finale {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 60px 20px;
+            position: relative;
+        }
+        .finale h1 {
+            font-size: clamp(28px, 6vw, 56px);
+            color: var(--gold);
+            text-shadow: 0 10px 30px rgba(246, 200, 76, 0.14);
+        }
+        .finale h2 {
+            color: #ffd700;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        .cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 18px;
+            opacity: 0;
+            animation: revealText 1s forwards;
+            animation-delay: 8.5s;
+        }
+        .btn {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--muted);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .btn.primary {
+            background: linear-gradient(90deg, var(--gold), #f7e0a0);
+            color: #111;
+            border: 0;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #f7e0a0, var(--gold));
+        }
+        input {
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid var(--gold);
+            border-radius: 5px;
+            margin: 10px 0;
+            width: 200px;
+        }
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <audio id="backgroundSong" loop preload="auto">
+    <source src="https://github.com/coderdevin04/Learning/blob/main/15817.mp3" type="audio/mpeg">
+</audio>
+    <div id="diyaLoader">
+        <div class="rangoli-bg"></div>
+        <div class="diya-row">
+            <span class="diya-emoji">🪔</span>
+            <span class="diya-emoji">🪔</span>
+            <span class="diya-emoji">🪔</span>
+            <span class="diya-emoji">🪔</span>
+            <span class="diya-emoji">🪔</span>
+        </div>
+    </div>
+    <div id="typewriterScreen">
+        <canvas id="fireworksCanvas" style="position:absolute;inset:0;z-index:0"></canvas>
+        <div class="typewriter-text" id="englishGreeting"></div>
+        <div class="hindi-text" id="hindiGreeting"></div>
+    </div>
+    <div class="sparkle-container"></div>
+    <div class="wish-card finale" id="finale">
+        <h1 class="greeting">Happy Diwali!</h1>
+        <p class="wish-text">May your life glow with happiness, prosperity, and endless light.</p>
+        <h2>Wish Your Loved Ones</h2>
+        <h2>अपने प्रियजनों को शुभकामनाएं दें</h2>
+        <input type="text" id="recipientName" placeholder="Enter name">
+        <div class="cta">
+            <a class="btn primary" id="shareCopy">🎁 Share the Light</a>
+            <a class="btn" id="shareWhats">Share on WhatsApp</a>
+        </div>
+    </div>
+    <script>
+        
+        function generateSparkles() {
+            const sparkleContainer = document.querySelector('.sparkle-container');
+            for (let i = 0; i < 50; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                sparkle.style.left = `${Math.random() * 100}%`;
+                sparkle.style.top = `${Math.random() * 100}%`;
+                sparkle.style.width = `${Math.random() * 5 + 2}px`;
+                sparkle.style.height = sparkle.style.width;
+                sparkle.style.animationDelay = `${Math.random() * 3}s`;
+                sparkleContainer.appendChild(sparkle);
+            }
+        }
+        function typeWriter(element, text, speed, callback) {
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    callback();
+                }
+            }
+            type();
+        }
+        function deleteWriter(element, speed, callback) {
+            let text = element.textContent;
+            let i = text.length;
+            function del() {
+                if (i >= 0) {
+                    element.textContent = text.substring(0, i);
+                    i--;
+                    setTimeout(del, speed);
+                } else {
+                    callback();
+                }
+            }
+            del();
+        }
+        function getQueryParams() {
+            const params = {};
+            new URLSearchParams(window.location.search).forEach((value, key) => {
+                params[key] = decodeURIComponent(value.replace(/\+/g, ' '));
+            });
+            return params;
+        }
+        const fwCanvas = document.getElementById('fireworksCanvas');
+        const fwCtx = fwCanvas.getContext('2d');
+        function resizeFW() {
+            fwCanvas.width = innerWidth;
+            fwCanvas.height = innerHeight;
+        }
+        addEventListener('resize', resizeFW);
+        resizeFW();
+        const particles = [];
+        class Particle {
+            constructor(x, y, vx, vy, color, life) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.color = color;
+                this.life = life;
+            }
+            step() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.03;
+                this.life--;
+            }
+            draw(ctx) {
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.beginPath();
+                ctx.fillStyle = this.color;
+                ctx.arc(this.x, this.y, Math.max(0, Math.min(3, this.life / 6)), 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        function explode(x, y) {
+            const hue = Math.floor(Math.random() * 360);
+            for (let i = 0; i < 60; i++) {
+                const ang = Math.random() * Math.PI * 2;
+                const sp = 1 + Math.random() * 4;
+                const vx = Math.cos(ang) * sp;
+                const vy = Math.sin(ang) * sp;
+                const color = `hsl(${hue + Math.random() * 60 - 30}, 90%, 60%)`;
+                particles.push(new Particle(x, y, vx, vy, color, 40 + Math.random() * 30));
+            }
+        }
+        function fwLoop() {
+            fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.step();
+                p.draw(fwCtx);
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+            requestAnimationFrame(fwLoop);
+        }
+        fwLoop();
+        const finale = document.getElementById('finale');
+        const io = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                if (e.isIntersecting) {
+                    for (let i = 0; i < 6; i++) {
+                        setTimeout(() => explode(Math.random() * innerWidth, Math.random() * innerHeight), i * 400);
+                    }
+                }
+            }
+        }, { threshold: 0.45 });
+        io.observe(finale);
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = getQueryParams();
+            const recipientName = params.name || '';
+            const englishText = recipientName ? `✨ Happy Diwali, ${recipientName}! ✨` : '✨ Happy Diwali! ✨';
+            const hindiText = recipientName ? `🌟 शुभ दीपावली, ${recipientName}! 🌟` : '🌟 शुभ दीपावली! 🌟';
+            const diyaEmojis = document.querySelectorAll('.diya-emoji');
+            diyaEmojis.forEach((diya, index) => {
+                setTimeout(() => {
+                    diya.classList.add('lit');
+                }, index * 500);
+            });
+            setTimeout(() => {
+                const loader = document.getElementById('diyaLoader');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 1000);
+                const typewriterScreen = document.getElementById('typewriterScreen');
+                typewriterScreen.style.opacity = '1';
+                const englishGreeting = document.getElementById('englishGreeting');
+                const hindiGreeting = document.getElementById('hindiGreeting');
+                typeWriter(englishGreeting, englishText, 100, () => {
+                    setTimeout(() => {
+                        deleteWriter(englishGreeting, 100, () => {
+                            hindiGreeting.style.display = 'block';
+                            typeWriter(hindiGreeting, hindiText, 150, () => {
+                                setTimeout(() => {
+                                    typewriterScreen.style.opacity = '0';
+                                    setTimeout(() => {
+                                        typewriterScreen.classList.add('hidden');
+                                    }, 1000);
+                                }, 1000);
+                            });
+                        });
+                    }, 1000);
+                });
+            }, 2500);
+            const shareCopyBtn = document.getElementById('shareCopy');
+            const shareWhatsBtn = document.getElementById('shareWhats');
+            const recipientInput = document.getElementById('recipientName');
+            shareCopyBtn.addEventListener('click', () => {
+                const name = recipientInput.value.trim();
+                if (name) {
+                    const baseUrl = window.location.origin + window.location.pathname;
+                    const shareUrl = `${baseUrl}?name=${encodeURIComponent(name)}`;
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        alert('Link copied to clipboard!');
+                    });
+                    shareWhatsBtn.style.display = 'inline-block';
+                    shareWhatsBtn.href = `https://api.whatsapp.com/send?text=Check%20out%20this%20Diwali%20wish%20for%20you!%20${encodeURIComponent(shareUrl)}`;
+                }
+            });
+            generateSparkles();
+        });
+        window.addEventListener('load', () => {
+    const audio = document.getElementById('backgroundSong');
+    audio.volume = 0.3;
+    audio.play().catch(e => console.log('Song play failed:', e));
+});
+    </script>
+</body>
+</html>
