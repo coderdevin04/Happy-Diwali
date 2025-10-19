@@ -6,6 +6,8 @@
     <title>Happy Diwali</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Noto+Serif+Devanagari:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* --- Existing Styles (omitted for brevity, assume they are here) --- */
+
         :root {
             --gold: #ffd700;
             --muted: #e0e0e0;
@@ -204,6 +206,9 @@
             color: var(--muted);
             font-weight: 700;
             text-decoration: none;
+            /* Added for mobile: Ensures full width when stacked */
+            flex-grow: 1;
+            text-align: center;
         }
         .btn.primary {
             background: linear-gradient(90deg, var(--gold), #f7e0a0);
@@ -220,12 +225,76 @@
             border-radius: 5px;
             margin: 10px 0;
             width: 200px;
+            /* Centering on mobile */
+            max-width: 90%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         #fireworksCanvas {
             position: fixed;
             top: 0;
             left: 0;
             z-index: 0;
+        }
+
+        /* -------------------------------------- */
+        /* --- Mobile Responsiveness (Media Queries) --- */
+        /* -------------------------------------- */
+
+        /* Styles for screens smaller than 600px (standard smartphone width) */
+        @media (max-width: 600px) {
+            .diya-row {
+                gap: 15px; /* Reduce spacing between diyas */
+            }
+            .diya-emoji {
+                font-size: 40px; /* Smaller diyas */
+            }
+            
+            .typewriter-text, .hindi-text {
+                /* Better scaling for typewriter text on small screens */
+                font-size: clamp(1.8em, 8vw, 3.5em); 
+                /* Allow text to wrap if it's too long (e.g., if a long name is used) */
+                white-space: normal; 
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+
+            .wish-card {
+                padding: 30px 20px; /* Less padding on the wish card */
+                margin: 15px;
+                max-width: 95%;
+            }
+
+            h1.greeting {
+                font-size: 2.5em; /* Smaller primary greeting font */
+            }
+
+            p.wish-text {
+                font-size: 1em; /* Smaller body text */
+            }
+            
+            .finale h2 {
+                font-size: 1.4em; /* Smaller secondary heading */
+            }
+
+            .cta {
+                /* Force buttons to stack vertically on small screens */
+                flex-direction: column; 
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%; /* Full width buttons */
+                max-width: 300px; /* Prevents stretching too wide on tablet-like portrait modes */
+                margin: 0 auto;
+                padding: 15px 10px; /* Taller touch targets */
+            }
+            
+            input#recipientName {
+                width: 100%; 
+                max-width: 250px;
+            }
         }
     </style>
 </head>
